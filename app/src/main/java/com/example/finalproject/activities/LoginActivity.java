@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -58,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(email.isBlank() || password.isBlank()) {
             Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             else {
                 Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
 
