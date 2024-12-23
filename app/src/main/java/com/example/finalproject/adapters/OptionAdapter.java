@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.R;
 import com.example.finalproject.models.Question;
 
 import java.util.List;

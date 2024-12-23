@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".activities.QuizActivity">
+
+    <TextView
+        android:id="@+id/quiz_description"
+        android:layout_width="0dp"
+        android:textAlignment="textStart"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingLeft="5dp"
+
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/question_recycler"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quiz_description">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/prev_btn"
+        android:text="Previous"
+        android:layout_width="0dp"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/verticalGuideLine"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next_btn"
+        android:layout_width="0dp"
+        android:textAllCaps="false"
+        android:text="Next"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/verticalGuideLine" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:visibility="invisible"
+        android:text="Submit"
+        android:id="@+id/submit_btn"
+        android:layout_width="0dp"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/verticalGuideLine" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       app:layout_constraintGuide_percent="0.5" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+</androidx.constraintlayout.widget.ConstraintLayout>
