@@ -35,7 +35,7 @@ public class QuizActivity extends AppCompatActivity {
 
     // Quiz and Questions
     ArrayList<Quiz> quizzes = new ArrayList<>();
-    HashMap<String, Question> quesions = new HashMap<>();
+    HashMap<String,Question> quesions = new HashMap<>();
     int index = 1;
 
     Button submit;
@@ -44,7 +44,6 @@ public class QuizActivity extends AppCompatActivity {
 
     Question question = new Question();
     // Shows Questions
-    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +51,13 @@ public class QuizActivity extends AppCompatActivity {
 
 
         // Got The recycler view
-        quiz_recycler = findViewById(R.id.question_recycler);
-        description = findViewById(R.id.quiz_description);
+        quiz_recycler =(RecyclerView) findViewById(R.id.question_recycler);
+        description = (TextView) findViewById(R.id.quiz_description);
         firestore = FirebaseFirestore.getInstance();
         // Buttons found
-        submit = findViewById(R.id.submit_btn);
-        previous = findViewById(R.id.prev_btn);
-        next = findViewById(R.id.next_btn);
+        submit = (Button) findViewById(R.id.submit_btn);
+        previous =(Button) findViewById(R.id.prev_btn);
+        next =(Button) findViewById(R.id.next_btn);
 
         submit.setVisibility(View.GONE);
         next.setVisibility(View.GONE);
@@ -71,7 +70,6 @@ public class QuizActivity extends AppCompatActivity {
     }
     public void setUpEventListner(){
         next.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onClick(View v) {
                 index++;
@@ -79,7 +77,6 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
         previous.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onClick(View v) {
                 index--;
@@ -89,9 +86,7 @@ public class QuizActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO
-                 * 1) make 2 activity layouts -> results and logout
-                 *  */
+
                 Log.d("DATA","FINAL RESULTS : "+ quesions);
                 Log.d("DATA","FINAL RESULTS : "+ quizzes.get(0));
 
@@ -120,7 +115,7 @@ public class QuizActivity extends AppCompatActivity {
                                 if(task.getResult() != null && !task.getResult().isEmpty()){
                                     Log.d("DATA",""+task.getResult().toObjects(Quiz.class).toString());
                                     quizzes = (ArrayList<Quiz>) task.getResult().toObjects(Quiz.class);
-                                    quesions = (HashMap<String, Question>) quizzes.get(0).getQuestions();
+                                    quesions = quizzes.get(0).questions;
 
                                     Log.d("DATA","Hello array"+quizzes);
                                     Log.d("DATA","QUESTIONS "+ quesions.get("question1"));
@@ -138,10 +133,9 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     public void setUpView(){
 
-        if(quesions.size() != 0 || quesions != null) {
+        if(!quesions.isEmpty() || quesions != null) {
 
             if (index == 1 && index == quesions.size()) {
                 submit.setVisibility(View.VISIBLE);
@@ -162,11 +156,19 @@ public class QuizActivity extends AppCompatActivity {
         setUpRecycler();
 
     }
+    public void setUpDummyData(){
+        question.description ="What is Java?";
+        question.option1 = "Language";
+        question.option2="Framework";
+        question.option3="Hello";
+        question.option4="Non";
+        question.answer="Language";
+        question.userAnswer="";
+    }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     public void setUpRecycler() {
         if(question != null) {
-            description.setText(question.getDescription());
+            description.setText(question.description);
             quiz_recycler.setLayoutManager(new LinearLayoutManager(this));
             quiz_recycler.setAdapter(new OptionAdapter(QuizActivity.this, question));
 

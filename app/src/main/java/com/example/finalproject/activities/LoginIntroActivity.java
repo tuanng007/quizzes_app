@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginIntro extends AppCompatActivity {
+public class LoginIntroActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Button buttonStart;
 
@@ -45,11 +45,11 @@ public class LoginIntro extends AppCompatActivity {
     private void redirect(String name) {
         Intent intent;
         if (name.equals("LOGIN")) {
-           intent = new Intent(LoginIntro.this, LoginActivity.class);
+           intent = new Intent(LoginIntroActivity.this, LoginActivity.class);
            startActivity(intent);
            finish();
         } else if (name.equals("MAIN")) {
-           intent =  new Intent(LoginIntro.this, MainActivity.class);
+           intent =  new Intent(LoginIntroActivity.this, MainActivity.class);
            startActivity(intent);
            finish();
         } else {

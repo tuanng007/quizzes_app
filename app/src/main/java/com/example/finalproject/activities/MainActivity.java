@@ -1,139 +1,166 @@
 package com.example.finalproject.activities;
 
-import android.content.Intent;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+
 import com.example.finalproject.R;
 import com.example.finalproject.adapters.QuizAdapter;
-import com.example.finalproject.models.Question;
 import com.example.finalproject.models.Quiz;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    MaterialToolbar appbar;
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private QuizAdapter adapter;
-    List<Quiz> quizList = new ArrayList<>();
-    FirebaseFirestore firestore;
+    ActionBarDrawerToggle action_toggle;
+    DrawerLayout drawer;
+    NavigationView nav_view;
+    RecyclerView recyclerView;
+    FloatingActionButton fab;
+    ArrayList<Quiz> quiz_data = new ArrayList<>();
+    FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        drawer = (DrawerLayout) findViewById(R.id.main_drawer);
+        appbar = (MaterialToolbar) findViewById(R.id.topAppBar);
+        recyclerView = (RecyclerView) findViewById(R.id.quiz_recycler);
+        fab = (FloatingActionButton) findViewById(R.id.btn_date_picker);
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+//        populateDummyData();
         setUpViews();
-        populateQuizzes();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainDrawer), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+    }
+    // Populating Dummy data
+    public void populateDummyData(){
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+        quiz_data.add(new Quiz("10/10/2021","10/10/2021"));
+    }
+    public void setUpViews(){
+        // First View
+        setUpDrawerLayout();
+        // second view
+        setUpRecycler();
+        //
+        setUpFireStore();
+        // setting up datePicker
+        //  setUpDatePicker();
+    }
+//    public void setUpDatePicker(){
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().build();
+//                datePicker.show(getSupportFragmentManager(),"DataPicker");
+//                // Listener for Pressing ok
+//                datePicker.addOnPositiveButtonClickListener((MaterialPickerOnPositiveButtonClickListener) selection -> {
+//                    Log.d("DATE",selection.toString());
+//                    Log.d("DATE",datePicker.getHeaderText());
+//                    SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
+//
+//                    String date = dateFormater.format(new Date((Long) selection));
+//
+//                    Log.d("DATE","DATE FORMAT"+date);
+//                    Intent intent = new Intent(MainActivity.this,QuizActivity.class);
+//                    intent.putExtra("DATE",date);
+//                    startActivity(intent);
+//                });
+//
+//                // Cancel button Pressed Of DatePicker
+//                datePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Log.d("DATE",datePicker.getHeaderText());
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
+    public void setUpFireStore() {
+        CollectionReference collection = firebaseFirestore.collection("quizzes");
+        collection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent( QuerySnapshot value, FirebaseFirestoreException error) {
+                if(value == null || error != null){
+                    Toast.makeText(MainActivity.this,"Error in Fetching Data",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                HashMap<String,Question> test = (HashMap<String,Question>) value.toObjects(Quiz.class).get(0).questions;
+//
+//                Log.d("TAG",""+test.toString());
+                Log.d("TAG",value.toObjects(Quiz.class).get(0).questions.toString());
+                Log.d("TAG",""+value.toObjects(Quiz.class).toString());
+                quiz_data.clear();
+                quiz_data.addAll(value.toObjects(Quiz.class));
+
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
         });
     }
 
-
-    private void setUpViews() {
-       setUpFireStore();
-        setUpDrawerLayout();
-        setUpRecyclerView();
-        // setUpDatePicker();
+    public void setUpRecycler(){
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setAdapter(new QuizAdapter(this,quiz_data));
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
-
-//    private void setUpDatePicker() {
-//        findViewById(R.id.btnDatePicker).setOnClickListener(view -> {
-//            MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().build();
-//            datePicker.show(getSupportFragmentManager(), "DatePicker");
-//            datePicker.addOnPositiveButtonClickListener(selection -> {
-//                Log.d("DATEPICKER", datePicker.getHeaderText());
-//                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-//                String date = dateFormatter.format(new Date((Long) selection));
-//                Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
-//                intent.putExtra("DATE", date);
-//                startActivity(intent);
-//            });
-//            datePicker.addOnNegativeButtonClickListener(dialog -> {
-//                Log.d("DATEPICKER", datePicker.getHeaderText());
-//            });
-//            datePicker.addOnCancelListener(dialog -> {
-//                Log.d("DATEPICKER", "Date Picker Cancelled");
-//            });
-//        });
-//    }
-
-    private void setUpFireStore() {
-        firestore = FirebaseFirestore.getInstance();
-        firestore.collection("quizzes")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Question> questions = queryDocumentSnapshots.toObjects(Question.class);
-                    // Process your questions here
-
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors
-                    Toast.makeText(this, "Firebase Error", Toast.LENGTH_SHORT).show();
-    });
+    public void setUpDrawerLayout(){
+        // setting action Bar
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                startActivity(new Intent(MainActivity.this,ProfileActivity.class));
+                drawer.closeDrawers();
+                return true;
+            }
+        });
+        setSupportActionBar(appbar);
+        // Adding 'Toggle'
+        action_toggle = new ActionBarDrawerToggle(
+                MainActivity.this,
+                drawer,
+                R.string.app_name,
+                R.string.app_name
+        );
     }
-
-    private void populateQuizzes() {
-        quizList.add(new Quiz("123", "12341"));
-        quizList.add(new Quiz("123", "12341"));
-
-        quizList.add(new Quiz("123", "12341"));
-
-        quizList.add(new Quiz("123", "12341"));
-
-    }
-
-
-    private void setUpRecyclerView() {
-        adapter = new QuizAdapter(this, quizList);
-        RecyclerView quizRecyclerView = findViewById(R.id.quizRecyclerView);
-        quizRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        quizRecyclerView.setAdapter(adapter);
-    }
-
-    private void setUpDrawerLayout() {
-        setSupportActionBar(findViewById(R.id.appBar));
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, findViewById(R.id.mainDrawer), R.string.open_drawer, R.string.close_drawer);
-        actionBarDrawerToggle.syncState();
-//        NavigationView navigationView = findViewById(R.id.navigation);
-//        navigationView.setNavigationItemSelectedListener(item -> {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
-//            findViewById(R.id.mainDrawer).closeDrawers();
-//            return true;
-//        });
-    }
+    // For toggling 'override'
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+        action_toggle.onOptionsItemSelected(item);
+        return true;
     }
 }
