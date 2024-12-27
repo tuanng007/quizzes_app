@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "384935637352",
-    "project_id": "quizz-b76c1",
-    "storage_bucket": "quizz-b76c1.firebasestorage.app"
+    "project_number": "717114585066",
+    "firebase_url": "https://test-27de6-default-rtdb.firebaseio.com",
+    "project_id": "test-27de6",
+    "storage_bucket": "test-27de6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:384935637352:android:2ab0042361f7e69ef1e6dd",
+        "mobilesdk_app_id": "1:717114585066:android:e2925a724e03bbd0b60c93",
         "android_client_info": {
           "package_name": "com.example.finalproject"
         }
@@ -15,7 +16,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCG0F5gmqiEC81NR35WA0a9J1cwkJZoVwA"
+          "current_key": "AIzaSyCgwAuNG8sqn4bw5RPYXhYhbqnXa751h9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717114585066:android:fe6437c26d684d27b60c93",
+        "android_client_info": {
+          "package_name": "com.example.quizzappadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgwAuNG8sqn4bw5RPYXhYhbqnXa751h9M"
         }
       ],
       "services": {

@@ -1,90 +1,79 @@
 package com.example.finalproject.models;
 
 public class Question {
-    public String description ="";
-    public String option1 ="";
-    public String option2 ="";
-    public String option3 ="";
-    public String option4 ="";
-    public String answer ="";
-    public String userAnswer ="";
-    // For FireBase
-    public Question(){}
-    // For Us to Receive Data
-    public Question(String description,String option1,String option2,String option3,String option4,String answer){
-        this.description = description;
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.option4 = option4;
-        this.answer = answer;
-    }
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    private String question;
+    private String optionA;
+    private String optionB;
+    private String optionC;
+    private String optionD;
+    private String correctAnswer;
+    private String key;
+
+    public Question() {
     }
 
-    public String getAnswer() {
-        return answer;
+    public Question(String question, String optionA, String optionB, String optionC, String optionD, String correctAnswer) {
+        this.question = question;
+        this.optionA = optionA;
+        this.optionB = optionB;
+        this.optionC = optionC;
+        this.optionD = optionD;
+        this.correctAnswer = correctAnswer;
     }
 
-    public String getDescription() {
-        return description;
+    public String getQuestion() {
+        return question;
     }
 
-    public String getOption1() {
-        return option1;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getOption2() {
-        return option2;
+    public String getOptionA() {
+        return optionA;
     }
 
-    public String getOption3() {
-        return option3;
+    public void setOptionA(String optionA) {
+        this.optionA = optionA;
     }
 
-    public String getOption4() {
-        return option4;
+    public String getOptionB() {
+        return optionB;
     }
 
-    public String getUserAnswer() {
-        return userAnswer;
+    public void setOptionB(String optionB) {
+        this.optionB = optionB;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getOptionC() {
+        return optionC;
     }
 
-    public void setOption1(String option1) {
-        this.option1 = option1;
+    public void setOptionC(String optionC) {
+        this.optionC = optionC;
     }
 
-    public void setOption2(String option2) {
-        this.option2 = option2;
+    public String getOptionD() {
+        return optionD;
     }
 
-    public void setOption3(String option3) {
-        this.option3 = option3;
+    public void setOptionD(String optionD) {
+        this.optionD = optionD;
     }
 
-    public void setOption4(String option4) {
-        this.option4 = option4;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setUserAnswer(String userAnswer) {
-        this.userAnswer = userAnswer;
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
-    @Override
-    public String toString() {
-        return "Question{" +
-                "description='" + description + '\'' +
-                ", option1='" + option1 + '\'' +
-                ", option2='" + option2 + '\'' +
-                ", option3='" + option3 + '\'' +
-                ", option4='" + option4 + '\'' +
-                ", answer='" + answer + '\'' +
-                ", userAnswer='" + userAnswer + '\'' +
-                '}';
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

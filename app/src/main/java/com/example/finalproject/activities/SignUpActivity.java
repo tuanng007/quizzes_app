@@ -1,5 +1,6 @@
 package com.example.finalproject.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,11 +17,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText editTextNewEmail, editTextNewPassWord, editTextConfirmPassword;
-    private TextView textViewSignIn;
+    TextView textViewSignIn;
     Button buttonCreateAccount;
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,15 @@ public class SignUpActivity extends AppCompatActivity {
         editTextConfirmPassword = (EditText) findViewById(R.id.editText_ConfirmPassword);
         buttonCreateAccount = (Button) findViewById(R.id.btnCreateAccount);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
+        loadingDialog = new Dialog(this);
+        loadingDialog.setContentView(R.layout.loading_dialog);
+        loadingDialog.setCancelable(false);
+        Objects.requireNonNull(loadingDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+
+
 
         buttonCreateAccount.setOnClickListener(view -> {
+            loadingDialog.show();
             signUpUser();
         });
 
@@ -59,24 +70,27 @@ public class SignUpActivity extends AppCompatActivity {
 
         if(email.isBlank() || password.isBlank() || confirmPassword.isBlank())  {
             Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show();
+            loadingDialog.dismiss();
             return;
         }
 
         if(!password.equals(confirmPassword)) {
             Toast.makeText(this, "Password and Confirm password do not match", Toast.LENGTH_SHORT).show();
+            loadingDialog.dismiss();
             return;
         }
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if(task.isSuccessful()) {
                 Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
-
+                loadingDialog.dismiss();
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
             else {
-                Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Registration failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                loadingDialog.dismiss();
             }
         });
 

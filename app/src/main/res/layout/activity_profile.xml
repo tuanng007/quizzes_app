@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/colorPrimary"
+        android:background="@color/myPrimaryColor"
         android:gravity="center_horizontal"
         >
 
@@ -26,23 +26,12 @@
 
         <TextView
             android:id="@+id/userEmail"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hello" />
+            android:text="Email:" />
     </LinearLayout>
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/logout_button"
-        android:layout_marginTop="24dp"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_primary"
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="32dp"
-        android:textColor="@color/myPrimaryDarkColor"
-        android:layout_height="wrap_content"
-        android:text="LogOut"
-        />
 </LinearLayout>

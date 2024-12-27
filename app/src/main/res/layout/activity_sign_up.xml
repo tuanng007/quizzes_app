@@ -68,7 +68,7 @@
             android:hint="Confirm Password"
             />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/btn_primary"
             android:textColor="@color/white"
             android:id="@+id/btnCreateAccount"

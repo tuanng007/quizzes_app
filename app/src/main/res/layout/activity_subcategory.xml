@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_drawer"
+    android:id="@+id/main"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.SubCategoryActivity">
 
-    <!--    That can have only 2 child, 1-> Main screen , 2-> Drawer-->
-    <!-- First child is the main screen -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,14 +25,14 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_menu"
-                app:title="@string/app_name"
+                app:navigationIcon="@drawable/ic_back"
+                app:title="Sub Categories"
                 android:layout_marginTop="15dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCategory"
+            android:id="@+id/rvSubCatgory"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,6 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/appbarLayout">
 
         </androidx.recyclerview.widget.RecyclerView>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
